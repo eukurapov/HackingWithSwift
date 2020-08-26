@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="U0m-J4-gLB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="U0m-J4-gLB">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -45,7 +45,24 @@
                             <outlet property="delegate" destination="kEg-RY-13G" id="Kup-i9-FG4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="34f-mE-Khw"/>
+                    <navigationItem key="navigationItem" id="34f-mE-Khw">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="search" id="fIQ-IT-Gm9">
+                                <connections>
+                                    <action selector="search:" destination="kEg-RY-13G" id="uEL-vy-OJj"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem enabled="NO" systemItem="stop" id="nYv-oA-sfh">
+                                <connections>
+                                    <action selector="clear:" destination="kEg-RY-13G" id="9wx-1I-TFl"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="clearButton" destination="nYv-oA-sfh" id="A4W-Nb-Yf3"/>
+                        <outlet property="searchButton" destination="fIQ-IT-Gm9" id="E2E-2F-EKS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PiL-hU-GR6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -76,6 +93,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="U0m-J4-gLB" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aMG-SL-3mh">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
