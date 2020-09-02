@@ -29,12 +29,18 @@ class ViewController: UITableViewController {
             allWords = ["silkworm"]
         }
         
-        startGame()
+        if let titleWord = UserDefaults.standard.value(forKey: titleWordDefaultsKey) as? String {
+            title = titleWord
+            usedWords = (UserDefaults.standard.value(forKey: usedWordsDefaultsKey) as? [String]) ?? []
+        } else {
+            startGame()
+        }
     }
     
     @objc func startGame() {
         title = allWords.randomElement()
         usedWords.removeAll(keepingCapacity: true)
+        save()
         tableView.reloadData()
     }
 
@@ -68,7 +74,7 @@ class ViewController: UITableViewController {
             if isOriginal(word: lowerAnswer) {
                 if isReal(word: lowerAnswer) {
                     usedWords.insert(lowerAnswer, at: 0)
-                    
+                    save()
                     let rowPath = IndexPath(row: 0, section: 0)
                     tableView.insertRows(at: [rowPath], with: .automatic)
                 } else {
@@ -116,6 +122,18 @@ class ViewController: UITableViewController {
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
         return misspelledRange.location == NSNotFound
     }
+    
+    private func save() {
+        if let title = title {
+            UserDefaults.standard.set(title, forKey: titleWordDefaultsKey)
+        }
+        UserDefaults.standard.set(usedWords, forKey: usedWordsDefaultsKey)
+    }
+    
+    // MARK: - Constant Values
+    
+    private let usedWordsDefaultsKey = "UsedWords"
+    private let titleWordDefaultsKey = "TitleWord"
 
 }
 

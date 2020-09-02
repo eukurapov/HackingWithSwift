@@ -13,7 +13,7 @@
 		44701A3224FD5DEB0000BBDF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44701A3024FD5DEB0000BBDF /* Main.storyboard */; };
 		44701A3424FD5DEB0000BBDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44701A3324FD5DEB0000BBDF /* Assets.xcassets */; };
 		44701A3724FD5DEB0000BBDF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44701A3524FD5DEB0000BBDF /* LaunchScreen.storyboard */; };
-		44701A3F24FD5E370000BBDF /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44701A3E24FD5E370000BBDF /* words.txt */; };
+		44F70CE824FFF363000DC24D /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44F70CE724FFF363000DC24D /* words.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +25,7 @@
 		44701A3324FD5DEB0000BBDF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		44701A3624FD5DEB0000BBDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		44701A3824FD5DEB0000BBDF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		44701A3E24FD5E370000BBDF /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = words.txt; path = ../../Project5/Project5/words.txt; sourceTree = "<group>"; };
+		44F70CE724FFF363000DC24D /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +65,7 @@
 				44701A3324FD5DEB0000BBDF /* Assets.xcassets */,
 				44701A3524FD5DEB0000BBDF /* LaunchScreen.storyboard */,
 				44701A3824FD5DEB0000BBDF /* Info.plist */,
-				44701A3E24FD5E370000BBDF /* words.txt */,
+				44F70CE724FFF363000DC24D /* words.txt */,
 			);
 			path = Hangman;
 			sourceTree = "<group>";
@@ -129,7 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				44701A3724FD5DEB0000BBDF /* LaunchScreen.storyboard in Resources */,
-				44701A3F24FD5E370000BBDF /* words.txt in Resources */,
+				44F70CE824FFF363000DC24D /* words.txt in Resources */,
 				44701A3424FD5DEB0000BBDF /* Assets.xcassets in Resources */,
 				44701A3224FD5DEB0000BBDF /* Main.storyboard in Resources */,
 			);
