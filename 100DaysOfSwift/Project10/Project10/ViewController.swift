@@ -20,6 +20,11 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             navigationItem.leftBarButtonItems!.append(UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(photoPerson)))
         }
+        
+        if let peopleData = UserDefaults.standard.object(forKey: peopleDefaultsKey) as? Data {
+            let decoder = JSONDecoder()
+            people = (try? decoder.decode([Person].self, from: peopleData)) ?? []
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -58,6 +63,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             style: .destructive) { _ in
                 collectionView.performBatchUpdates({
                     self.people.remove(at: indexPath.item)
+                    self.save()
                     self.collectionView.deleteItems(at: [indexPath])
                 })
         })
@@ -73,6 +79,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             style: .default) { [weak self, weak ac] _ in
                 guard let newName = ac?.textFields?[0].text else { return }
                 self?.people[indexPath.item].name = newName
+                self?.save()
                 self?.collectionView.reloadItems(at: [indexPath])
             })
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -109,6 +116,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         let newPerson = Person(name: "Unknown", imageName: newName)
         people.append(newPerson)
+        save()
         if let newItemIndex = people.firstIndex(where: { $0.imageName == newPerson.imageName }) {
             collectionView.insertItems(at: [IndexPath(item: newItemIndex, section: 0)])
         } else {
@@ -122,9 +130,20 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
     
+    private func save() {
+        let encoder = JSONEncoder()
+        
+        if let peopleData = try? encoder.encode(people) {
+            UserDefaults.standard.set(peopleData, forKey: peopleDefaultsKey)
+        } else {
+            print("Couldn't save people")
+        }
+    }
+    
     // MARK: - Constant Values
     
     private let personCellIdentifier = "Person"
+    private let peopleDefaultsKey = "People"
 
 }
 
