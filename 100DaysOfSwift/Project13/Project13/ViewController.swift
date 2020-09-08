@@ -87,6 +87,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let ciImage = CIImage(image: currentImage)
             filter.setValue(ciImage, forKey: kCIInputImageKey)
             applyFilter()
+            imageView.alpha = 0
+            UIView.animate(withDuration: 1, animations: { self.imageView.alpha = 1 })
         }
     }
     
