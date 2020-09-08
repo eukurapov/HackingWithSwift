@@ -146,7 +146,7 @@ class ViewController: UIViewController {
         if let letters = sender.titleLabel?.text {
             answer.text?.append(contentsOf: letters)
             selectedLetters.append(sender)
-            sender.isHidden = true
+            sender.isShown(false)
         }
     }
     
@@ -192,7 +192,7 @@ class ViewController: UIViewController {
     private func clearAnswer() {
         answer.text = ""
         for button in selectedLetters {
-            button.isHidden = false
+            button.isShown(true)
         }
         selectedLetters.removeAll()
     }
@@ -217,7 +217,7 @@ class ViewController: UIViewController {
                 letterButtons.shuffle()
                 if letterButtons.count == letters.count {
                     for index in letterButtons.indices {
-                        letterButtons[index].isHidden = false
+                        letterButtons[index].isShown(true)
                         letterButtons[index].setTitle(letters[index], for: .normal)
                     }
                 }
@@ -226,5 +226,17 @@ class ViewController: UIViewController {
             }
         }
     }
+}
+
+extension UIButton {
+    
+    func isShown(_ value: Bool) {
+        UIView.animate(
+            withDuration: 1,
+            animations: {
+                self.alpha = (value ? 1 : 0)
+        })
+    }
+    
 }
 
