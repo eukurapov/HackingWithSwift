@@ -45,6 +45,14 @@ class ViewController: UIViewController {
         button2.setImage(UIImage(named: countries[1]), for: .normal)
         button3.setImage(UIImage(named: countries[2]), for: .normal)
         
+        UIView.animate(
+            withDuration: 0.7,
+            animations: {
+                self.button1.transform = .identity
+                self.button2.transform = .identity
+                self.button3.transform = .identity
+        })
+        
         //title = "Score: \(score), Country: \(countries[correctAnswer].uppercased())"
         title = countries[correctAnswer].uppercased()
     }
@@ -53,6 +61,16 @@ class ViewController: UIViewController {
         var alertTitle: String
         var actionTitle = "Continue"
         var message = ""
+        
+        UIView.animate(
+            withDuration: 0.7,
+            delay: 0,
+            usingSpringWithDamping: 0.4,
+            initialSpringVelocity: 5,
+            options: [],
+            animations: {
+                sender.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        })
         
         if (sender.tag == correctAnswer) {
             alertTitle = "Correct"
