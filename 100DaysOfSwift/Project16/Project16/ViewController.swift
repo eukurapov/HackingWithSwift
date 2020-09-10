@@ -25,6 +25,26 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let washington = Capital(title: "Washington DC", coordinate: CLLocationCoordinate2D(latitude: 38.895111, longitude: -77.036667), info: "Named after George himself.")
         
         mapView.addAnnotations([london, oslo, paris, rome, washington])
+        
+        let infoButton = UIButton(type: .detailDisclosure)
+        infoButton.addTarget(self, action: #selector(changeMapView), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton)
+    }
+    
+    @objc
+    private func changeMapView() {
+        let ac = UIAlertController(title: "Map Type", message: nil, preferredStyle: .actionSheet)
+        ac.addAction(UIAlertAction(title: "Standard", style: .default, handler: { [unowned self] _ in
+            self.mapView.mapType = MKMapType.standard
+        }))
+        ac.addAction(UIAlertAction(title: "Satellite", style: .default, handler: { [unowned self] _ in
+            self.mapView.mapType = MKMapType.satellite
+        }))
+        ac.addAction(UIAlertAction(title: "Hybrid", style: .default, handler: { [unowned self] _ in
+            self.mapView.mapType = MKMapType.hybrid
+        }))
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(ac, animated: true)
     }
     
     // MARK: - MKMapViewDelegate
