@@ -1,0 +1,54 @@
+[
+    {
+        "name": "Russia",
+        "flag": "https://www.cia.gov/library/publications/the-world-factbook/attachments/flags/RS-flag.jpg",
+        "area": 17098246,
+        "population": 146748590,
+        "currency": "Russian Rouble, ₽",
+        "isoCode": "RU",
+        "capital": {
+            "name": "Moscow",
+            "area": 2511,
+            "population": 12506468
+        }
+    },
+    {
+        "name": "Germany",
+        "flag": "https://www.cia.gov/library/publications/the-world-factbook/attachments/flags/GM-flag.jpg",
+        "area": 357022,
+        "population": 83166711,
+        "currency": "Euro, €",
+        "isoCode": "DE",
+        "capital": {
+            "name": "Berlin",
+            "area": 891,
+            "population": 3769495
+        }
+    },
+    {
+        "name": "France",
+        "flag": "https://www.cia.gov/library/publications/the-world-factbook/attachments/flags/FR-flag.jpg",
+        "area": 640679,
+        "population": 67081000,
+        "currency": "Euro, €",
+        "isoCode": "FR",
+        "capital": {
+            "name": "Paris",
+            "area": 105,
+            "population": 2148271
+        }
+    },
+    {
+        "name": "Spain",
+        "flag": "https://www.cia.gov/library/publications/the-world-factbook/attachments/flags/SP-flag.jpg",
+        "area": 505990,
+        "population": 47431256,
+        "currency": "Euro, €",
+        "isoCode": "ES",
+        "capital": {
+            "name": "Madrid",
+            "area": 604,
+            "population": 3223334
+        }
+    }
+]
