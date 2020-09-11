@@ -15,7 +15,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var scoreLabel: SKLabelNode!
     private var score = 0 {
         didSet {
-            scoreLabel.text = "Score: \(score)"
+            scoreLabel.text = "⭐️ \(score)"
         }
     }
     private var isGameOver = true {
@@ -46,6 +46,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel = SKLabelNode(fontNamed: fontName)
         scoreLabel.position = CGPoint(x: 16, y: 16)
         scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.fontSize = 44.0
         addChild(scoreLabel)
         
         gameOver = SKSpriteNode(imageNamed: "gameOver")
@@ -65,25 +66,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     @objc
     private func generateEnemy() {
-        guard let enemy = possibleEnemies.randomElement() else { return }
-        
-        let enemyNode = SKSpriteNode(imageNamed: enemy)
-        enemyNode.position = CGPoint(x: size.width + 300, y: CGFloat.random(in: 50...(size.height-50)))
-        enemyNode.name = enemyName
-        addChild(enemyNode)
-        
-        enemyNode.physicsBody = SKPhysicsBody(texture: enemyNode.texture!, size: enemyNode.size)
-        enemyNode.physicsBody?.categoryBitMask = 1
-        enemyNode.physicsBody?.angularVelocity = 5
-        enemyNode.physicsBody?.angularDamping = 0
-        enemyNode.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
-        enemyNode.physicsBody?.linearDamping = 0
-        
-        countEnemies += 1
-        if countEnemies % levelLimit == 0 {
-            let interval = startInterval - stepInterval * Double(countEnemies / levelLimit)
-            resetTimerFor(interval)
+        let node: SKSpriteNode
+        if Int.random(in: 1...5) == 1 {
+            node = SKSpriteNode(imageNamed: "star")
+            node.name = friendName
+        } else {
+            guard let enemy = possibleEnemies.randomElement() else { return }
+            node = SKSpriteNode(imageNamed: enemy)
+            node.name = enemyName
+            
+            countEnemies += 1
+            if countEnemies % levelLimit == 0 {
+                let interval = startInterval - stepInterval * Double(countEnemies / levelLimit)
+                resetTimerFor(interval)
+            }
         }
+        node.position = CGPoint(x: size.width + 300, y: CGFloat.random(in: 50...(size.height-50)))
+        addChild(node)
+        
+        node.physicsBody = SKPhysicsBody(texture: node.texture!, size: node.size)
+        node.physicsBody?.categoryBitMask = 1
+        node.physicsBody?.angularVelocity = 5
+        node.physicsBody?.angularDamping = 0
+        node.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
+        node.physicsBody?.linearDamping = 0
     }
     
     @objc
@@ -94,6 +100,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.position = CGPoint(x: 100, y: size.height/2)
         player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.size)
         player.physicsBody?.contactTestBitMask = 1
+        player.physicsBody?.isDynamic = false
         addChild(player)
         
         let fire = SKEmitterNode(fileNamed: "fire")!
@@ -144,25 +151,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 node.removeFromParent()
             }
         }
-        
-        if !isGameOver {
-            score += 1
-        }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        let explosion = SKEmitterNode(fileNamed: "explosion")!
-        explosion.position = player.position
-        addChild(explosion)
+        var collisionNode: SKNode?
 
-        player.removeFromParent()
-        timer?.invalidate()
-        for node in children {
-            if node.name == enemyName {
-                node.removeFromParent()
-            }
+        if contact.bodyA.node == player {
+            collisionNode = contact.bodyB.node
+        } else if contact.bodyB.node == player {
+            collisionNode = contact.bodyA.node
+        } else {
+            return
         }
-        isGameOver = true
+        
+        if collisionNode?.name == enemyName {
+            let explosion = SKEmitterNode(fileNamed: "explosion")!
+            explosion.position = player.position
+            addChild(explosion)
+
+            player.removeFromParent()
+            timer?.invalidate()
+            for node in children {
+                if node.name == enemyName {
+                    node.removeFromParent()
+                }
+            }
+            isGameOver = true
+        } else if collisionNode?.name == friendName {
+            let magic = SKEmitterNode(fileNamed: "magic")!
+            magic.position = contact.contactPoint
+            addChild(magic)
+            collisionNode?.removeFromParent()
+            score += 1
+        }
     }
     
     // MARK: - Constant Values
@@ -171,6 +192,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private let levelLimit: Int = 20
     private let movingThreshold: CGFloat = 100
     private let enemyName = "enemy"
+    private let friendName = "friend"
     private let startInterval: TimeInterval = 1
-    private let stepInterval: TimeInterval = 0.05
+    private let stepInterval: TimeInterval = 0.1
 }
