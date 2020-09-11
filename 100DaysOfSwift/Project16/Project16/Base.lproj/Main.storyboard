@@ -37,6 +37,21 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="126.5625"/>
         </scene>
+        <!--Web View Controller-->
+        <scene sceneID="ZGV-2O-uyu">
+            <objects>
+                <viewController storyboardIdentifier="WebView" id="HzC-Rm-rPT" customClass="WebViewController" customModule="Project16" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UsV-MF-q3d">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="LJx-eZ-mKI"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0q5-CT-Njm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1878.2608695652175" y="127.90178571428571"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="5jh-LM-u8r">
             <objects>
