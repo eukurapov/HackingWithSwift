@@ -31,6 +31,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var gameOver: SKSpriteNode!
     private var startGame: SKLabelNode!
     
+    private var isMoving = false
+    
     override func didMove(to view: SKView) {
         backgroundColor = .black
         
@@ -66,6 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let enemyNode = SKSpriteNode(imageNamed: enemy)
         enemyNode.position = CGPoint(x: size.width + 300, y: CGFloat.random(in: 50...(size.height-50)))
+        enemyNode.name = "enemy"
         addChild(enemyNode)
         
         enemyNode.physicsBody = SKPhysicsBody(texture: enemyNode.texture!, size: enemyNode.size)
@@ -95,15 +98,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         isGameOver = false
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let touchNodes = nodes(at: location)
+        if player != nil, touchNodes.contains(player) { isMoving = true }
+    }
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         
         if !isGameOver {
             var location = touch.location(in: self)
-            if location.y < 100 { location.y = 100 }
-            if location.y > size.height - 100 { location.y = size.height - 100 }
-            player.position = location
+            if isMoving {
+                if location.y < 100 { location.y = 100 }
+                if location.y > size.height - 100 { location.y = size.height - 100 }
+                player.position = location
+            }
         }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let touchNodes = nodes(at: location)
+        if touchNodes.contains(startGame) { start() }
+        if player != nil, touchNodes.contains(player) { isMoving = false }
     }
  
     override func update(_ currentTime: TimeInterval) {
@@ -125,17 +145,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         player.removeFromParent()
         timer.invalidate()
-        isGameOver = true
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
-        let touchNodes = nodes(at: location)
-        for node in touchNodes {
-            if node == startGame {
-                start()
+        for node in children {
+            if node.name == "enemy" {
+                node.removeFromParent()
             }
         }
+        isGameOver = true
     }
 }
