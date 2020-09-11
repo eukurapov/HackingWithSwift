@@ -26,12 +26,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private var possibleEnemies = ["ball", "hammer", "tv"]
-    private var timer: Timer!
+    private var timer: Timer?
     
     private var gameOver: SKSpriteNode!
     private var startGame: SKLabelNode!
     
     private var isMoving = false
+    private var countEnemies = 0
     
     override func didMove(to view: SKView) {
         backgroundColor = .black
@@ -42,7 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         starfield.zPosition = -1
         addChild(starfield)
         
-        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel = SKLabelNode(fontNamed: fontName)
         scoreLabel.position = CGPoint(x: 16, y: 16)
         scoreLabel.horizontalAlignmentMode = .left
         addChild(scoreLabel)
@@ -52,7 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameOver.isHidden = true
         addChild(gameOver)
         
-        startGame = SKLabelNode(fontNamed: "Chalkduster")
+        startGame = SKLabelNode(fontNamed: fontName)
         startGame.position = CGPoint(x: size.width/2, y: size.height/2 - 100)
         startGame.fontSize = 44.0
         startGame.text = "Start Game"
@@ -68,7 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let enemyNode = SKSpriteNode(imageNamed: enemy)
         enemyNode.position = CGPoint(x: size.width + 300, y: CGFloat.random(in: 50...(size.height-50)))
-        enemyNode.name = "enemy"
+        enemyNode.name = enemyName
         addChild(enemyNode)
         
         enemyNode.physicsBody = SKPhysicsBody(texture: enemyNode.texture!, size: enemyNode.size)
@@ -77,6 +78,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemyNode.physicsBody?.angularDamping = 0
         enemyNode.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
         enemyNode.physicsBody?.linearDamping = 0
+        
+        countEnemies += 1
+        if countEnemies % levelLimit == 0 {
+            let interval = startInterval - stepInterval * Double(countEnemies / levelLimit)
+            resetTimerFor(interval)
+        }
     }
     
     @objc
@@ -93,9 +100,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fire.position = CGPoint(x: -player.size.width/2, y: 0)
         player.addChild(fire)
         
-        timer = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(generateEnemy), userInfo: nil, repeats: true)
+        resetTimerFor(startInterval)
         
         isGameOver = false
+    }
+    
+    private func resetTimerFor(_ interval: TimeInterval) {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: startInterval, target: self, selector: #selector(generateEnemy), userInfo: nil, repeats: true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -111,8 +123,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if !isGameOver {
             var location = touch.location(in: self)
             if isMoving {
-                if location.y < 100 { location.y = 100 }
-                if location.y > size.height - 100 { location.y = size.height - 100 }
+                if location.y < movingThreshold { location.y = movingThreshold }
+                if location.y > size.height - movingThreshold { location.y = size.height - movingThreshold }
                 player.position = location
             }
         }
@@ -144,12 +156,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(explosion)
 
         player.removeFromParent()
-        timer.invalidate()
+        timer?.invalidate()
         for node in children {
-            if node.name == "enemy" {
+            if node.name == enemyName {
                 node.removeFromParent()
             }
         }
         isGameOver = true
     }
+    
+    // MARK: - Constant Values
+    
+    private let fontName: String = "Chalkduster"
+    private let levelLimit: Int = 20
+    private let movingThreshold: CGFloat = 100
+    private let enemyName = "enemy"
+    private let startInterval: TimeInterval = 1
+    private let stepInterval: TimeInterval = 0.05
 }
