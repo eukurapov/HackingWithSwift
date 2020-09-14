@@ -144,8 +144,10 @@ class GameScene: SKScene {
             target.configure(at: CGPoint(x: startingX, y: startingY))
             target.target.name = targetName
             addChild(target)
+            let speed = Int.random(in: 1...3)
+            target.points = speed
             target.run(
-                SKAction.moveTo(x: destinationX, duration: TimeInterval.random(in: 5...7)),
+                SKAction.moveTo(x: destinationX, duration: TimeInterval(5-speed)),
                 completion: {
                     target.removeFromParent()
             })
@@ -191,8 +193,8 @@ class GameScene: SKScene {
                 if shoot(at: position) {
                     for node in touchNodes {
                         if node.name == targetName {
-                            score += 1
                             if let targetNode = node.parent as? TargetNode {
+                                score += targetNode.points
                                 targetNode.dismiss()
                             }
                         }
