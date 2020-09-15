@@ -22,6 +22,8 @@ class GameScene: SKScene {
     
     private var timer: Timer!
     
+    private var launchCount = 0
+    
     override func didMove(to view: SKView) {
         let background = SKSpriteNode(imageNamed: "background")
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
@@ -39,6 +41,22 @@ class GameScene: SKScene {
         
         timer = Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(launchFireworks), userInfo: nil, repeats: true)
         timer.fire()
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        for (index, firework) in fireworks.enumerated().reversed() {
+            if firework.position.y > size.height + 100 {
+                fireworks.remove(at: index)
+                firework.removeFromParent()
+            }
+        }
+    }
+    
+    private func gameOver() {
+        timer.invalidate()
+        let gameOver = SKSpriteNode(imageNamed: "gameOver")
+        gameOver.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        addChild(gameOver)
     }
     
     // MARK: - Add Fireworks
@@ -75,6 +93,11 @@ class GameScene: SKScene {
     
     @objc
     private func launchFireworks() {
+        launchCount += 1
+        if launchCount > maxLaunchCount {
+            gameOver()
+            return
+        }
         switch Int.random(in: 1...4) {
         case 1:
             addFirework(xMovement: 0, x: size.width / 2 - 200, y: bottomEdge)
@@ -172,4 +195,6 @@ class GameScene: SKScene {
     private var rightEdge: CGFloat { size.width + 22 }
     private let bottomEdge: CGFloat = -22
     private var movement: CGFloat { size.width * 1.5 }
+    
+    private let maxLaunchCount = 10
 }
