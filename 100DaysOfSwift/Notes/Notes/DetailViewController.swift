@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationCenter
 
 class DetailViewController: UIViewController, UITextViewDelegate {
     
@@ -37,6 +38,12 @@ class DetailViewController: UIViewController, UITextViewDelegate {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
         
+        let remindButton = UIButton()
+        remindButton.setImage(UIImage(systemName: "timer"), for: .normal)
+        remindButton.addTarget(self, action: #selector(remind), for: .touchUpInside)
+        let remindItem = UIBarButtonItem(customView: remindButton)
+        navigationItem.rightBarButtonItems?.append(remindItem)
+        
         if note.text.isEmpty {
             textView.becomeFirstResponder()
         }
@@ -64,8 +71,7 @@ class DetailViewController: UIViewController, UITextViewDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        note.text = textView.text
-        editCompletionHandler?()
+        completeEdit()
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -75,6 +81,7 @@ class DetailViewController: UIViewController, UITextViewDelegate {
     
     @objc
     private func completeEdit() {
+        note.text = textView.text
         textView.resignFirstResponder()
         navigationItem.rightBarButtonItems?.removeFirst()
         editCompletionHandler?()
@@ -115,5 +122,66 @@ class DetailViewController: UIViewController, UITextViewDelegate {
     private func remove() {
         navigationController?.popViewController(animated: false)
         removeAction?()
+    }
+    
+    @objc
+    private func remind() {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { [weak self] settings in
+            if settings.authorizationStatus == .authorized {
+                DispatchQueue.main.async {
+                    self?.scheduleNotification()
+                }
+            } else {
+                self?.registerNotifications()
+            }
+        }
+    }
+    
+    private func scheduleNotification() {
+        let center = UNUserNotificationCenter.current()
+
+        let content = UNMutableNotificationContent()
+        content.title = "Check your note"
+        content.body = note.text
+        content.categoryIdentifier = "reminder"
+        content.userInfo = ["noteID": note.id.uuidString]
+        content.sound = UNNotificationSound.default
+        
+        let ac = UIAlertController(title: "Reminder Time", message: nil, preferredStyle: .actionSheet)
+        let picker = UIDatePicker()
+        picker.minimumDate = Date()
+        picker.datePickerMode = .dateAndTime
+        ac.view.addSubview(picker)
+        ac.view.addConstraint(NSLayoutConstraint(
+            item: ac.view!,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: .none,
+            attribute: .notAnAttribute,
+            multiplier: 1,
+            constant: 320))
+        ac.addAction(UIAlertAction(title: "Done", style: .default) { [unowned self] _ in
+            let date = picker.date
+            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            
+            center.removePendingNotificationRequests(withIdentifiers: [self.note.id.uuidString])
+            let request = UNNotificationRequest(identifier: self.note.id.uuidString, content: content, trigger: trigger)
+            center.add(request)
+        })
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(ac, animated: true)
+    }
+    
+    private func registerNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] (granted, error) in
+            if granted {
+                self?.remind()
+            } else {
+                print("Notifications not authorized")
+            }
+        }
     }
 }

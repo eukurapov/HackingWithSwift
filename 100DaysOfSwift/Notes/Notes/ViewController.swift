@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class ViewController: UITableViewController, UNUserNotificationCenterDelegate {
     
     private var notes = {
         [
@@ -32,6 +32,7 @@ class ViewController: UITableViewController {
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(compose))
         setToolbarItems([spacer, composeButton], animated: true)
         
+        registerCategories()
         load()
     }
     
@@ -39,6 +40,8 @@ class ViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         navigationItem.largeTitleDisplayMode = .always
+        
+        tableView.reloadData()
     }
     
     @objc
@@ -62,15 +65,7 @@ class ViewController: UITableViewController {
         detailVC.note = notes[indexPath.row]
         detailVC.composeAction = { [unowned self] in self.compose() }
         detailVC.removeAction = { [unowned self] in self.remove(at: indexPath) }
-        detailVC.editCompletionHandler = { [unowned self] in
-            if self.notes[indexPath.row].text.isEmpty {
-                self.notes.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            } else {
-                self.tableView.reloadRows(at: [indexPath], with: .none)
-            }
-            self.save()
-        }
+        detailVC.editCompletionHandler = { [unowned self] in self.save() }
         navigationController?.popViewController(animated: false)
         navigationController?.pushViewController(detailVC, animated: true)
     }
@@ -124,6 +119,25 @@ class ViewController: UITableViewController {
         if let data = try? encoder.encode(notes) {
             try? data.write(to: url)
         }
+    }
+    
+    // MARK: - UNUserNotificationCenterDelegate
+    
+    func registerCategories() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        let category = UNNotificationCategory(identifier: "reminder", actions: [], intentIdentifiers: [])
+        center.setNotificationCategories([category])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        if let noteID = userInfo["noteID"] as? String {
+            if let index = notes.firstIndex { $0.id.uuidString == noteID } {
+                showDetailsForNoteAt(IndexPath(row: index, section: 0))
+            }
+        }
+        completionHandler()
     }
     
     // MARK: - Constant Values
