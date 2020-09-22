@@ -14,6 +14,7 @@ enum CollisionCategory: UInt32 {
     case star = 4
     case vortex = 8
     case finish = 16
+    case teleport = 32
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -93,6 +94,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     node.name = finishName
                     levelBlocks.append(node)
                     addChild(node)
+                case "t":
+                    let node = gameNodeFromImage("vortex", position: position, category: .teleport)
+                    node.name = teleportName
+                    node.colorBlendFactor = 1
+                    node.color = .cyan
+                    node.run(SKAction.repeatForever(SKAction.rotate(byAngle: -.pi, duration: 1)))
+                    levelBlocks.append(node)
+                    addChild(node)
                 case "p":
                     startPosition = position
                 case " ": break
@@ -127,7 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.categoryBitMask = CollisionCategory.player.rawValue
         player.physicsBody?.collisionBitMask = CollisionCategory.block.rawValue
-        player.physicsBody?.contactTestBitMask = CollisionCategory.star.rawValue | CollisionCategory.vortex.rawValue | CollisionCategory.finish.rawValue
+        player.physicsBody?.contactTestBitMask = CollisionCategory.star.rawValue | CollisionCategory.vortex.rawValue | CollisionCategory.finish.rawValue | CollisionCategory.teleport.rawValue
         addChild(player)
     }
     
@@ -160,6 +169,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.run(SKAction.sequence([move, fadeOut, remove])) { [weak self] in
                 self?.resetPlayer()
                 self?.isGameOver = false
+            }
+        case teleportName:
+            let move = SKAction.move(to: node.position, duration: 0.25)
+            let fadeOut = SKAction.scale(to: 0.0001, duration: 0.25)
+            player.run(SKAction.sequence([move, fadeOut])) { [unowned self] in
+                if let teleport = levelBlocks.first(where: { $0 != node && $0.name == teleportName }) as? SKSpriteNode {
+                    teleport.physicsBody?.categoryBitMask = 0
+                    teleport.physicsBody?.contactTestBitMask = 0
+                    teleport.color = .yellow
+                    teleport.run(SKAction.wait(forDuration: 5)) {
+                        teleport.physicsBody?.categoryBitMask = CollisionCategory.teleport.rawValue
+                        teleport.physicsBody?.contactTestBitMask = CollisionCategory.player.rawValue
+                        teleport.color = .cyan
+                    }
+                    player.position = teleport.position
+                    player.run(SKAction.scale(to: 1, duration: 0.25))
+                }
             }
         case starName:
             score += 1
@@ -207,6 +233,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private let vortexName: String = "vortex"
     private let starName: String = "star"
     private let finishName: String = "finish"
+    private let teleportName: String = "teleport"
     
     private let maxLevel = 2
 }
