@@ -19,13 +19,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        draw(rectangle)
+        draw(emoji)
     }
 
     @IBAction func redrawPressed(_ sender: UIButton) {
         drawItem += 1
         
-        if drawItem > 5 {
+        if drawItem > 6 {
             drawItem = 0
         }
         
@@ -36,6 +36,7 @@ class ViewController: UIViewController {
         case 3: draw(rotatedSquares)
         case 4: draw(movingLines)
         case 5: draw(textAndImage)
+        case 6: draw(emoji)
         default: break
         }
     }
@@ -118,6 +119,47 @@ class ViewController: UIViewController {
         attrString.draw(with: CGRect(x: 32, y: 32, width: 448, height: 448), options: .usesLineFragmentOrigin, context: nil)
         let mouse = UIImage(named: "mouse")
         mouse?.draw(at: CGPoint(x: 300, y: 150))
+    }
+    
+    // 🙂
+    private let emoji: Actions = { context in
+        let cgContext = context.cgContext
+        let rect = CGRect(x: 0, y: 0, width: 512, height: 512).insetBy(dx: 5, dy: 5)
+        
+        guard let gradient = CGGradient(
+            colorsSpace: CGColorSpaceCreateDeviceRGB(),
+            colors: [UIColor.yellow.cgColor, UIColor.orange.cgColor] as CFArray,
+            locations: [0.0, 1.0]
+        ) else { return }
+        
+        cgContext.addEllipse(in: rect)
+        cgContext.clip()
+        cgContext.drawLinearGradient(
+            gradient,
+            start: CGPoint(x: rect.midX, y: rect.minX),
+            end: CGPoint(x: rect.midX, y: rect.maxY),
+            options: []
+        )
+        
+        cgContext.setStrokeColor(UIColor.orange.cgColor)
+        cgContext.setLineWidth(10)
+        cgContext.addEllipse(in: rect)
+        cgContext.strokePath()
+        
+        cgContext.addEllipse(in: CGRect(x: rect.midX - 100, y: rect.minY + 150, width: 50, height: 70))
+        cgContext.addEllipse(in: CGRect(x: rect.midX + 50, y: rect.minY + 150, width: 50, height: 70))
+        cgContext.setFillColor(UIColor.brown.cgColor)
+        cgContext.setStrokeColor(UIColor.black.cgColor)
+        cgContext.setLineWidth(3)
+        cgContext.drawPath(using: .fillStroke)
+        
+        let smileStart = CGPoint(x: rect.midX - 150, y: rect.maxY - 200)
+        let smileEnd = CGPoint(x: rect.midX + 150, y: rect.maxY - 200)
+        cgContext.move(to: smileStart)
+        cgContext.addQuadCurve(to: smileEnd, control: CGPoint(x: rect.midX, y: smileStart.y + 150))
+        cgContext.addQuadCurve(to: smileStart, control: CGPoint(x: rect.midX, y: smileStart.y + 80))
+        cgContext.closePath()
+        cgContext.drawPath(using: .fillStroke)
     }
     
 }
