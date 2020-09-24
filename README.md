@@ -10,3 +10,4 @@ Projects created as a part of [#100daysofswift](https://www.hackingwithswift.com
   1. [Countries](https://www.hackingwithswift.com/guide/6/3/challenge) — app that contains facts about countries, details view shown when tapped
   1. [ShootingGallery](https://www.hackingwithswift.com/guide/7/3/challenge) — shooting gallery game on SpriteKit
   1. [Notes](https://www.hackingwithswift.com/guide/8/3/challenge) — Apple Notes.app replica + ability to set note reminder (notification)
+  1. [Meme Generator](https://www.hackingwithswift.com/guide/10/3/challenge) — App to add some text over the image (changed UI to use TextView and supported keyboard appearance and color switching)
