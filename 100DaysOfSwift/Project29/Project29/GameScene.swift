@@ -64,6 +64,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player2ScoreLabel)
         player2ScoreLabel.attributedText = NSAttributedString(string: "Player Two: \(player2Score)", attributes: textAttributes)
 
+        let randomWind = Int.random(in: -3...3)
+        print(randomWind)
+        physicsWorld.gravity.dx = CGFloat(randomWind)
+        let windLabel = SKLabelNode(fontNamed: fontName)
+        windLabel.fontSize = fontSize
+        windLabel.position = CGPoint(x: 50, y: size.height - 100)
+        windLabel.horizontalAlignmentMode = .left
+        if randomWind > 0 {
+            windLabel.attributedText = NSAttributedString(string: String(repeating: ">", count: randomWind), attributes: textAttributes)
+        } else if randomWind < 0 {
+            windLabel.attributedText = NSAttributedString(string: String(repeating: "<", count: -randomWind), attributes: textAttributes)
+        }
+        addChild(windLabel)
+        
         createBuildings()
         createPlayers()
     }
