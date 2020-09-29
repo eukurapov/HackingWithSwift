@@ -29,10 +29,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var currentPlayer = 1
     
+    private var player1ScoreLabel: SKLabelNode!
+    var player1Score = 0 {
+        didSet {
+            guard let player1ScoreLabel = player1ScoreLabel else { return }
+            player1ScoreLabel.attributedText = NSAttributedString(string: "Player One: \(player1Score)", attributes: textAttributes)
+        }
+    }
+    private var player2ScoreLabel: SKLabelNode!
+    var player2Score = 0 {
+        didSet {
+            guard let player2ScoreLabel = player2ScoreLabel else { return }
+            player2ScoreLabel.attributedText = NSAttributedString(string: "Player Two: \(player2Score)", attributes: textAttributes)
+        }
+    }
+    
+    
     override func didMove(to view: SKView) {
-        backgroundColor = UIColor(hue: 0.669, saturation: 0.99, brightness: 0.67, alpha: 1)
+        backgroundColor = bgColor
         
         physicsWorld.contactDelegate = self
+        
+        player1ScoreLabel = SKLabelNode()
+        player1ScoreLabel.horizontalAlignmentMode = .left
+        player1ScoreLabel.position = CGPoint(x: 20, y: 20)
+        player1ScoreLabel.zPosition = 100
+        addChild(player1ScoreLabel)
+        player1ScoreLabel.attributedText = NSAttributedString(string: "Player Two: \(player1Score)", attributes: textAttributes)
+        
+        player2ScoreLabel = SKLabelNode()
+        player2ScoreLabel.horizontalAlignmentMode = .right
+        player2ScoreLabel.position = CGPoint(x: size.width-20, y: 20)
+        player2ScoreLabel.zPosition = 100
+        addChild(player2ScoreLabel)
+        player2ScoreLabel.attributedText = NSAttributedString(string: "Player Two: \(player2Score)", attributes: textAttributes)
 
         createBuildings()
         createPlayers()
@@ -157,18 +187,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(explosion)
         }
         player.removeFromParent()
+        banana.name = ""
         banana.removeFromParent()
+        banana = nil
+        
+        if currentPlayer == 1 {
+            player1Score += 1
+        } else {
+            player2Score += 1
+        }
+        
+        if player1Score == 3 || player2Score == 3 {
+            let gameOver = SKLabelNode()
+            gameOver.attributedText = NSAttributedString(
+                string: "Player \(currentPlayer) wins!",
+                attributes: textAttributes)
+            gameOver.position = CGPoint(x: size.width/2, y: size.height/2)
+            gameOver.numberOfLines = -1
+            gameOver.zPosition = 100
+            addChild(gameOver)
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                let newGame = GameScene(size: self.size)
+                newGame.viewController = self.viewController
+                self.viewController.currentGame = newGame
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let newGame = GameScene(size: self.size)
-            newGame.viewController = self.viewController
-            self.viewController.currentGame = newGame
+                self.changePlayer()
+                newGame.currentPlayer = self.currentPlayer
+                newGame.player1Score = self.player1Score
+                newGame.player2Score = self.player2Score
 
-            self.changePlayer()
-            newGame.currentPlayer = self.currentPlayer
-
-            let transition = SKTransition.doorway(withDuration: 1.5)
-            self.view?.presentScene(newGame, transition: transition)
+                let transition = SKTransition.doorway(withDuration: 1.5)
+                self.view?.presentScene(newGame, transition: transition)
+            }
         }
     }
     
@@ -192,8 +243,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: - Constant Values
     
-    private let player1Name = "player1"
-    private let player2Name = "player2"
-    private let bananaName = "banana"
+    private let bgColor = UIColor(hue: 0.669, saturation: 0.99, brightness: 0.67, alpha: 1)
+    
+    private let player1Name: String = "player1"
+    private let player2Name: String = "player2"
+    private let bananaName: String = "banana"
+    
+    private let fontName: String = "Marker Felt"
+    private let fontSize: CGFloat = 46.0
+    private let textAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont(name: "Marker Felt", size: 46.0)!,
+        .strokeColor: UIColor.white,
+        .strokeWidth: -2,
+        .foregroundColor: UIColor(hue: 0.669, saturation: 0.99, brightness: 0.67, alpha: 1)
+    ]
     
 }
