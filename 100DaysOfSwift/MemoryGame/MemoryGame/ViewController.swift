@@ -15,9 +15,9 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Memory Game"
-        
         newGame()
+        
+        title = theme.name
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(newGame))
     }
@@ -32,6 +32,8 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.reloadData()
     }
     
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
     private func updateCellSize() {
         let aspectScale: CGFloat = 4/5
         let numberOfItems = game.cards.count
@@ -40,19 +42,19 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         var rows = 1
         var cols = numberOfItems
-        var width = (frameWidth - 10*CGFloat(cols+2)) / CGFloat(cols)
-        var height = width / aspectScale
+        let getWidth = { (frameWidth - 10*CGFloat(cols+2)) / CGFloat(cols) }
+        var width = getWidth()
+        let getHeight = { width / aspectScale }
+        var height = getHeight()
         while Int(frameHeight-20) / Int(height + 10) >= rows {
             cols -= 1
             rows = numberOfItems / cols + 1
-            width = (frameWidth - 10*CGFloat(cols+2)) / CGFloat(cols)
-            height = width / aspectScale
+            width = getWidth()
+            height = getHeight()
         }
         cols += 1
-        fixedWidth = (frameWidth - 10*CGFloat(cols+2)) / CGFloat(cols)
+        fixedWidth = getWidth()
     }
-    
-    // MARK: - UICollectionViewDelegateFlowLayout
     
     var flowLayout: UICollectionViewFlowLayout? {
         return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
@@ -83,7 +85,15 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if let cardCell = cell as? CardCell {
             cardCell.card = game.cards[indexPath.item]
         }
+        cell.isUserInteractionEnabled = !game.cards[indexPath.item].isMatched
         return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        game.choose(card: game.cards[indexPath.item])
+        collectionView.reloadData()
     }
 
     // MARK: - Constant Values
