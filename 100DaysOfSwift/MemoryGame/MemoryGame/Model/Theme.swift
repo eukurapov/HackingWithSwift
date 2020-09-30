@@ -12,6 +12,10 @@ struct Theme: Codable, Identifiable {
     
     static let defaults: [Theme] = [.halloween, .animals, .sports, .transport, .faces]
     
+    static var any: Theme {
+        defaults.randomElement()!
+    }
+    
     static let halloween = Theme(name: "Halloween",
                                  emojis: ["👻", "🎃", "🕷", "🧙‍♀️", "🕯"],
                                  cardStyle: CardStyle(color: .orange),
@@ -75,10 +79,6 @@ struct Theme: Codable, Identifiable {
         } else {
             return nil
         }
-    }
-    
-    static var any: Theme {
-        defaults.randomElement()!
     }
     
     struct CardStyle: Codable {

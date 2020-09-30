@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UICollectionViewController {
+class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     private var game: Game<String>!
     private var theme: Theme!
@@ -17,11 +17,59 @@ class ViewController: UICollectionViewController {
         
         title = "Memory Game"
         
+        newGame()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(newGame))
+    }
+    
+    @objc
+    private func newGame() {
         theme = Theme.any
         game = Game<String>(numberOfPairsOfCards: theme.numberOfPairs, cardContentFactory: { [unowned self] pairIndex in
             return self.theme.emojis[pairIndex]
         })
+        updateCellSize()
+        collectionView.reloadData()
     }
+    
+    private func updateCellSize() {
+        let aspectScale: CGFloat = 4/5
+        let numberOfItems = game.cards.count
+        let frameHeight = collectionView.frame.height
+        let frameWidth = collectionView.frame.width
+        
+        var rows = 1
+        var cols = numberOfItems
+        var width = (frameWidth - 10*CGFloat(cols+2)) / CGFloat(cols)
+        var height = width / aspectScale
+        while Int(frameHeight-20) / Int(height + 10) >= rows {
+            cols -= 1
+            rows = numberOfItems / cols + 1
+            width = (frameWidth - 10*CGFloat(cols+2)) / CGFloat(cols)
+            height = width / aspectScale
+        }
+        cols += 1
+        fixedWidth = (frameWidth - 10*CGFloat(cols+2)) / CGFloat(cols)
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    var flowLayout: UICollectionViewFlowLayout? {
+        return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
+    }
+    
+    private var fixedWidth: CGFloat = 128 {
+        didSet {
+            flowLayout?.invalidateLayout()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let aspectScale: CGFloat = 4/5
+        return CGSize(width: fixedWidth, height: fixedWidth / aspectScale)
+    }
+    
+    // MARK: - UICollectionViewDataSource
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return game.cards.count

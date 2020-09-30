@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -12,38 +11,41 @@
         <scene sceneID="UHX-oh-zwo">
             <objects>
                 <collectionViewController storyboardIdentifier="GameField" id="Nim-s0-Cz2" customClass="ViewController" customModule="MemoryGame" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="D8t-9w-rUG">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" id="D8t-9w-rUG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="e31-tI-7HI">
-                            <size key="itemSize" width="128" height="160"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" sectionInsetReference="safeArea" id="e31-tI-7HI">
+                            <size key="itemSize" width="120" height="160"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CardCell" id="dlq-l2-M4H" customClass="CardCell" customModule="MemoryGame" customModuleProvider="target">
-                                <rect key="frame" x="10" y="10" width="121" height="160"/>
+                                <rect key="frame" x="10" y="10" width="128" height="160"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="itQ-FM-4YB">
-                                    <rect key="frame" x="0.0" y="0.0" width="121" height="160"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="128" height="160"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🤯" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VVS-nT-Hi1">
-                                            <rect key="frame" x="10" y="24" width="101" height="112"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="🤯" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="24" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VVS-nT-Hi1">
+                                            <rect key="frame" x="10" y="10" width="108" height="140"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="94"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="VVS-nT-Hi1" secondAttribute="trailing" constant="10" id="Mo0-x4-XVP"/>
-                                        <constraint firstItem="VVS-nT-Hi1" firstAttribute="leading" secondItem="itQ-FM-4YB" secondAttribute="leading" constant="10" id="WOu-rv-yxK"/>
-                                        <constraint firstItem="VVS-nT-Hi1" firstAttribute="top" secondItem="itQ-FM-4YB" secondAttribute="top" constant="24" id="udn-E4-erJ"/>
-                                        <constraint firstAttribute="bottom" secondItem="VVS-nT-Hi1" secondAttribute="bottom" constant="24" id="wJX-8F-7EY"/>
-                                    </constraints>
-                                </collectionViewCellContentView>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="centerY" secondItem="dlq-l2-M4H" secondAttribute="centerY" id="Dn0-vX-9fV"/>
+                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="centerX" secondItem="dlq-l2-M4H" secondAttribute="centerX" id="Rd9-H2-Pob"/>
+                                    <constraint firstAttribute="trailing" secondItem="VVS-nT-Hi1" secondAttribute="trailing" constant="10" id="Tcj-DE-EZ7"/>
+                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="leading" secondItem="dlq-l2-M4H" secondAttribute="leading" constant="10" id="XxP-ug-Awa"/>
+                                    <constraint firstAttribute="bottom" secondItem="VVS-nT-Hi1" secondAttribute="bottom" constant="10" id="g6M-jM-wOm"/>
+                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="top" secondItem="dlq-l2-M4H" secondAttribute="top" constant="10" id="uC9-aI-ApX"/>
+                                </constraints>
+                                <size key="customSize" width="128" height="160"/>
                                 <connections>
                                     <outlet property="cardContentLabel" destination="VVS-nT-Hi1" id="TG2-M5-fdy"/>
                                 </connections>
