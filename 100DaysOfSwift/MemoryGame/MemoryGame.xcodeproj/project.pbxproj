@@ -13,6 +13,7 @@
 		44439967252473F7006631D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44439965252473F7006631D5 /* Main.storyboard */; };
 		44439969252473F7006631D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44439968252473F7006631D5 /* Assets.xcassets */; };
 		4443996C252473F7006631D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4443996A252473F7006631D5 /* LaunchScreen.storyboard */; };
+		444399752524794B006631D5 /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444399742524794B006631D5 /* CardCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		44439968252473F7006631D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4443996B252473F7006631D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4443996D252473F7006631D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		444399742524794B006631D5 /* CardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				4443995F252473F7006631D5 /* AppDelegate.swift */,
 				44439961252473F7006631D5 /* SceneDelegate.swift */,
+				444399742524794B006631D5 /* CardCell.swift */,
 				44439963252473F7006631D5 /* ViewController.swift */,
 				44439965252473F7006631D5 /* Main.storyboard */,
 				44439968252473F7006631D5 /* Assets.xcassets */,
@@ -140,6 +143,7 @@
 				44439964252473F7006631D5 /* ViewController.swift in Sources */,
 				44439960252473F7006631D5 /* AppDelegate.swift in Sources */,
 				44439962252473F7006631D5 /* SceneDelegate.swift in Sources */,
+				444399752524794B006631D5 /* CardCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
