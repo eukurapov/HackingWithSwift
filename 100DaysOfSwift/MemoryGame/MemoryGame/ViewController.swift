@@ -17,8 +17,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         newGame()
         
-        title = theme.name
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(newGame))
     }
     
@@ -28,8 +26,14 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         game = Game<String>(numberOfPairsOfCards: theme.numberOfPairs, cardContentFactory: { [unowned self] pairIndex in
             return self.theme.emojis[pairIndex]
         })
+        navigationItem.prompt = theme.name
+        updateScore()
         updateCellSize()
         collectionView.reloadData()
+    }
+    
+    private func updateScore() {
+        title = "Score: \(game.score)"
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -94,6 +98,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         game.choose(card: game.cards[indexPath.item])
         collectionView.reloadData()
+        updateScore()
     }
 
     // MARK: - Constant Values
