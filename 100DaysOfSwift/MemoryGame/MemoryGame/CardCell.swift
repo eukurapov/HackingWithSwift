@@ -9,9 +9,10 @@ import UIKit
 
 class CardCell: UICollectionViewCell {
     
-    var cardContent: String! {
+    // TODO: Replace with Game.Card
+    var card: Game<String>.Card! {
         didSet {
-            cardContentLabel.text = cardContent
+            cardContentLabel.text = card.content
         }
     }
     
