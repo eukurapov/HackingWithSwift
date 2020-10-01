@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  GameViewController.swift
 //  MemoryGame
 //
 //  Created by Eugene Kurapov on 30.09.2020.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class GameViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var theme: Theme!
     private var game: Game<String>!
-    private var theme: Theme!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,6 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     @objc
     private func newGame() {
-        theme = Theme.any
         game = Game<String>(numberOfPairsOfCards: theme.numberOfPairs, cardContentFactory: { [unowned self] pairIndex in
             return self.theme.emojis[pairIndex]
         })

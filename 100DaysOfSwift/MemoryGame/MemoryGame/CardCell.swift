@@ -54,7 +54,11 @@ class CardCell: UICollectionViewCell {
     
     func flip() {
         if self.faceUpView.isHidden != !self.card.isFaceUp {
-            UIView.transition(with: self.contentView, duration: flipDuration, options: .transitionFlipFromRight) { [unowned self] in
+            UIView.transition(
+                with: self.contentView,
+                duration: flipDuration,
+                options: .transitionFlipFromRight
+            ) { [unowned self] in
                     self.faceUpView.isHidden = !self.card.isFaceUp
                     self.faceDownView.isHidden = self.card.isFaceUp
             } completion: { [unowned self] _ in

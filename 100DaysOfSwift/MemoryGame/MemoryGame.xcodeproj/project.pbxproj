@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		44439960252473F7006631D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4443995F252473F7006631D5 /* AppDelegate.swift */; };
 		44439962252473F7006631D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44439961252473F7006631D5 /* SceneDelegate.swift */; };
-		44439964252473F7006631D5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44439963252473F7006631D5 /* ViewController.swift */; };
+		44439964252473F7006631D5 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44439963252473F7006631D5 /* GameViewController.swift */; };
 		44439967252473F7006631D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44439965252473F7006631D5 /* Main.storyboard */; };
 		44439969252473F7006631D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44439968252473F7006631D5 /* Assets.xcassets */; };
 		4443996C252473F7006631D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4443996A252473F7006631D5 /* LaunchScreen.storyboard */; };
@@ -21,13 +21,14 @@
 		44A8DCD92524879900790115 /* Array+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A8DCD42524879900790115 /* Array+Theme.swift */; };
 		44A8DCDA2524879900790115 /* Data+Utf8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A8DCD52524879900790115 /* Data+Utf8.swift */; };
 		44A8DCDB2524879900790115 /* UIColor+RGBA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A8DCD62524879900790115 /* UIColor+RGBA.swift */; };
+		44A8DCDE252631F500790115 /* ThemePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A8DCDD252631F500790115 /* ThemePickerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4443995C252473F7006631D5 /* MemoryGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoryGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4443995F252473F7006631D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44439961252473F7006631D5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		44439963252473F7006631D5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		44439963252473F7006631D5 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		44439966252473F7006631D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		44439968252473F7006631D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4443996B252473F7006631D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -40,6 +41,7 @@
 		44A8DCD42524879900790115 /* Array+Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Theme.swift"; sourceTree = "<group>"; };
 		44A8DCD52524879900790115 /* Data+Utf8.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Utf8.swift"; sourceTree = "<group>"; };
 		44A8DCD62524879900790115 /* UIColor+RGBA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+RGBA.swift"; sourceTree = "<group>"; };
+		44A8DCDD252631F500790115 /* ThemePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +79,8 @@
 				4443995F252473F7006631D5 /* AppDelegate.swift */,
 				44439961252473F7006631D5 /* SceneDelegate.swift */,
 				444399742524794B006631D5 /* CardCell.swift */,
-				44439963252473F7006631D5 /* ViewController.swift */,
+				44A8DCDD252631F500790115 /* ThemePickerViewController.swift */,
+				44439963252473F7006631D5 /* GameViewController.swift */,
 				44439965252473F7006631D5 /* Main.storyboard */,
 				44439968252473F7006631D5 /* Assets.xcassets */,
 				4443996A252473F7006631D5 /* LaunchScreen.storyboard */,
@@ -177,9 +180,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44439964252473F7006631D5 /* ViewController.swift in Sources */,
+				44439964252473F7006631D5 /* GameViewController.swift in Sources */,
 				447F7C4E252483F900D6D3B7 /* Game.swift in Sources */,
 				44439960252473F7006631D5 /* AppDelegate.swift in Sources */,
+				44A8DCDE252631F500790115 /* ThemePickerViewController.swift in Sources */,
 				44A8DCDB2524879900790115 /* UIColor+RGBA.swift in Sources */,
 				447F7C4D252483F900D6D3B7 /* Theme.swift in Sources */,
 				44439962252473F7006631D5 /* SceneDelegate.swift in Sources */,
