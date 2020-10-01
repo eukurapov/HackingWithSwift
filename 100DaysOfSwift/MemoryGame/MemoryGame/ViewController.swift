@@ -89,6 +89,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cardCell.bgColor = theme.cardStyle.color
             cardCell.reset()
         }
+        cell.layer.masksToBounds = false
         cell.isUserInteractionEnabled = !game.cards[indexPath.item].isMatched
         return cell
     }

@@ -29,9 +29,17 @@ class CardCell: UICollectionViewCell {
         faceUpView.layer.borderWidth = 1
         faceUpView.layer.borderColor = UIColor.black.cgColor
         faceUpView.layer.cornerRadius = 5
+        faceUpView.layer.shadowColor = UIColor.gray.cgColor
+        faceUpView.layer.shadowRadius = 3
+        faceUpView.layer.shadowOpacity = 0.5
+        faceUpView.layer.shadowPath = UIBezierPath(roundedRect:faceDownView.bounds, cornerRadius:faceDownView.layer.cornerRadius).cgPath
         faceDownView.layer.borderWidth = 1
         faceDownView.layer.borderColor = UIColor.black.cgColor
         faceDownView.layer.cornerRadius = 5
+        faceDownView.layer.shadowColor = UIColor.gray.cgColor
+        faceDownView.layer.shadowRadius = 3
+        faceDownView.layer.shadowOpacity = 0.5
+        faceDownView.layer.shadowPath = UIBezierPath(roundedRect:faceDownView.bounds, cornerRadius:faceDownView.layer.cornerRadius).cgPath
     }
     
     func reset() {
@@ -39,6 +47,9 @@ class CardCell: UICollectionViewCell {
         self.isHidden = false
         faceUpView.isHidden = true
         faceDownView.isHidden = false
+        // update shadows ↓
+        setNeedsLayout()
+        layoutIfNeeded()
     }
     
     func flip() {
