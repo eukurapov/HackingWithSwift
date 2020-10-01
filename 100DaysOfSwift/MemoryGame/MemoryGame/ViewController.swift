@@ -30,6 +30,7 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
         updateScore()
         updateCellSize()
         collectionView.reloadData()
+        collectionView.layoutIfNeeded()
     }
     
     private func updateScore() {
@@ -83,11 +84,10 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cardCellIdentifier, for: indexPath)
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.black.cgColor
-        cell.layer.cornerRadius = 5
         if let cardCell = cell as? CardCell {
             cardCell.card = game.cards[indexPath.item]
+            cardCell.bgColor = theme.cardStyle.color
+            cardCell.reset()
         }
         cell.isUserInteractionEnabled = !game.cards[indexPath.item].isMatched
         return cell
@@ -96,11 +96,19 @@ class ViewController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // MARK: - UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var faceUpCards = Set<Int>(game.cards.indices.filter { game.cards[$0].isFaceUp })
         game.choose(card: game.cards[indexPath.item])
-        collectionView.reloadData()
+        faceUpCards.formUnion(game.cards.indices.filter { game.cards[$0].isFaceUp })
+        faceUpCards.forEach { index in
+            let indexPath = IndexPath(item: index, section: 0)
+            if let cardCell = collectionView.cellForItem(at: indexPath) as? CardCell {
+                cardCell.card = game.cards[index]
+                cardCell.flip()
+            }
+        }
         updateScore()
     }
-
+    
     // MARK: - Constant Values
     
     private let cardCellIdentifier = "CardCell"

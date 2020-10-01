@@ -9,20 +9,67 @@ import UIKit
 
 class CardCell: UICollectionViewCell {
     
-    var card: Game<String>.Card! {
+    var bgColor: UIColor! {
         didSet {
-            let content: String
-            if card.isMatched {
-                content = "✔"
-            } else if card.isFaceUp {
-                content = self.card.content
-            } else {
-                content = "❓"
-            }
-            cardContentLabel.text = content
+            faceDownView.backgroundColor = bgColor
+        }
+    }
+    var card: Game<String>.Card! {
+        didSet(oldCard) {
+            cardContentLabel.text = self.card.content
         }
     }
     
+    @IBOutlet weak var faceUpView: UIView!
+    @IBOutlet weak var faceDownView: UIView!
     @IBOutlet private weak var cardContentLabel: UILabel!
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        faceUpView.layer.borderWidth = 1
+        faceUpView.layer.borderColor = UIColor.black.cgColor
+        faceUpView.layer.cornerRadius = 5
+        faceDownView.layer.borderWidth = 1
+        faceDownView.layer.borderColor = UIColor.black.cgColor
+        faceDownView.layer.cornerRadius = 5
+    }
+    
+    func reset() {
+        self.alpha = 1
+        self.isHidden = false
+        faceUpView.isHidden = true
+        faceDownView.isHidden = false
+    }
+    
+    func flip() {
+        if self.faceUpView.isHidden != !self.card.isFaceUp {
+            UIView.transition(with: self.contentView, duration: flipDuration, options: .transitionFlipFromRight) { [unowned self] in
+                    self.faceUpView.isHidden = !self.card.isFaceUp
+                    self.faceDownView.isHidden = self.card.isFaceUp
+            } completion: { [unowned self] _ in
+                if self.card.isMatched {
+                    self.hide(after: hideDelay)
+                }
+            }
+        } else {
+            if self.card.isMatched {
+                self.hide(after: flipDuration + hideDelay)
+            }
+        }
+    }
+    
+    private func hide(after interval: TimeInterval) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+interval) {
+            UIView.animate(withDuration: self.hideDuration) {
+                self.alpha = 0
+            } completion: { _ in
+                self.isHidden = true
+            }
+        }
+    }
+    
+    private let flipDuration: TimeInterval = 0.75
+    private let hideDelay: TimeInterval = 0.2
+    private let hideDuration: TimeInterval = 0.2
     
 }

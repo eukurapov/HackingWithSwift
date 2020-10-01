@@ -29,25 +29,45 @@
                                     <rect key="frame" x="0.0" y="0.0" width="128" height="160"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="🤯" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="24" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VVS-nT-Hi1">
-                                            <rect key="frame" x="10" y="10" width="108" height="140"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="94"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XP2-Wq-SOY">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="160"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        </view>
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dMN-hv-Tf7">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="160"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="🤯" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="24" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VVS-nT-Hi1">
+                                                    <rect key="frame" x="10" y="10" width="108" height="140"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="94"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="VVS-nT-Hi1" secondAttribute="trailing" constant="10" id="BzD-8Q-Vzj"/>
+                                                <constraint firstItem="VVS-nT-Hi1" firstAttribute="top" secondItem="dMN-hv-Tf7" secondAttribute="top" constant="10" id="Ics-n0-Guu"/>
+                                                <constraint firstAttribute="bottom" secondItem="VVS-nT-Hi1" secondAttribute="bottom" constant="10" id="lrV-Ni-Wek"/>
+                                                <constraint firstItem="VVS-nT-Hi1" firstAttribute="leading" secondItem="dMN-hv-Tf7" secondAttribute="leading" constant="10" id="nZl-2b-ex9"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="centerY" secondItem="dlq-l2-M4H" secondAttribute="centerY" id="Dn0-vX-9fV"/>
-                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="centerX" secondItem="dlq-l2-M4H" secondAttribute="centerX" id="Rd9-H2-Pob"/>
-                                    <constraint firstAttribute="trailing" secondItem="VVS-nT-Hi1" secondAttribute="trailing" constant="10" id="Tcj-DE-EZ7"/>
-                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="leading" secondItem="dlq-l2-M4H" secondAttribute="leading" constant="10" id="XxP-ug-Awa"/>
-                                    <constraint firstAttribute="bottom" secondItem="VVS-nT-Hi1" secondAttribute="bottom" constant="10" id="g6M-jM-wOm"/>
-                                    <constraint firstItem="VVS-nT-Hi1" firstAttribute="top" secondItem="dlq-l2-M4H" secondAttribute="top" constant="10" id="uC9-aI-ApX"/>
+                                    <constraint firstAttribute="bottom" secondItem="XP2-Wq-SOY" secondAttribute="bottom" id="49t-pI-hof"/>
+                                    <constraint firstItem="XP2-Wq-SOY" firstAttribute="leading" secondItem="dlq-l2-M4H" secondAttribute="leading" id="FlZ-HD-WYC"/>
+                                    <constraint firstAttribute="trailing" secondItem="XP2-Wq-SOY" secondAttribute="trailing" id="H2p-wv-B9W"/>
+                                    <constraint firstItem="dMN-hv-Tf7" firstAttribute="top" secondItem="dlq-l2-M4H" secondAttribute="top" id="LP0-gU-9kK"/>
+                                    <constraint firstItem="XP2-Wq-SOY" firstAttribute="top" secondItem="dlq-l2-M4H" secondAttribute="top" id="fTF-FN-z9h"/>
+                                    <constraint firstItem="dMN-hv-Tf7" firstAttribute="leading" secondItem="dlq-l2-M4H" secondAttribute="leading" id="fhD-1D-aFM"/>
+                                    <constraint firstAttribute="bottom" secondItem="dMN-hv-Tf7" secondAttribute="bottom" id="fuX-kg-XgT"/>
+                                    <constraint firstAttribute="trailing" secondItem="dMN-hv-Tf7" secondAttribute="trailing" id="iGa-Cp-QGR"/>
                                 </constraints>
                                 <size key="customSize" width="128" height="160"/>
                                 <connections>
                                     <outlet property="cardContentLabel" destination="VVS-nT-Hi1" id="TG2-M5-fdy"/>
+                                    <outlet property="faceDownView" destination="XP2-Wq-SOY" id="6sJ-8J-acJ"/>
+                                    <outlet property="faceUpView" destination="dMN-hv-Tf7" id="UcI-Rk-LkN"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
