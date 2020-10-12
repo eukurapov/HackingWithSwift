@@ -39,8 +39,50 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let vc = storyboard?.instantiateViewController(identifier: "Detail") as? DetailViewController {
             vc.imageName = flags[indexPath.row]
-            navigationController?.pushViewController(vc, animated: true)
+            let pageController = UIPageViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal)
+            pageController.dataSource = self
+            pageController.delegate = self
+            pageController.setViewControllers([vc], direction: .forward, animated: false)
+            pageController.navigationItem.title = vc.imageName
+            navigationController?.pushViewController(pageController, animated: true)
         }
     }
 }
 
+extension ViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        if let detailVC = viewController as? DetailViewController, let imageName = detailVC.imageName {
+            if let index = flags.firstIndex(of: imageName) {
+                if index > 0 {
+                    if let vc = storyboard?.instantiateViewController(identifier: "Detail") as? DetailViewController {
+                        vc.imageName = flags[index - 1]
+                        return vc
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        if let detailVC = viewController as? DetailViewController, let imageName = detailVC.imageName {
+            if let index = flags.firstIndex(of: imageName) {
+                if index < flags.count - 1 {
+                    if let vc = storyboard?.instantiateViewController(identifier: "Detail") as? DetailViewController {
+                        vc.imageName = flags[index + 1]
+                        return vc
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if let detailVC = pageViewController.viewControllers?.first as? DetailViewController {
+            pageViewController.navigationItem.title = detailVC.imageName
+        }
+    }
+    
+}
